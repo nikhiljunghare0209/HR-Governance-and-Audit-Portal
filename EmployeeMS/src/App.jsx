@@ -14,7 +14,8 @@ import Start from "./Components/Start";
 import EmployeeLogin from "./Components/EmployeeLogin";
 import EmployeeDetail from "./Components/EmployeeDetail";
 import PrivateRoute from "./Components/PrivateRoute";
-
+import AddAdmin from "./Components/AddAdmin";
+import AdminEmployees from "./Components/AdminEmployees";
 function App() {
   return (
     <BrowserRouter>
@@ -33,6 +34,11 @@ function App() {
         >
           <Route path="" element={<Home />}></Route>
           <Route path="/dashboard/employee" element={<Employee />}></Route>
+          <Route path="/dashboard/add-admin" element={<AddAdmin />} />
+          <Route
+            path="/dashboard/admin/:adminId/employees"
+            element={<AdminEmployees />}
+          />
           <Route path="/dashboard/category" element={<Category />}></Route>
           <Route path="/dashboard/profile" element={<Profile />}></Route>
           <Route
@@ -47,8 +53,6 @@ function App() {
             path="/dashboard/edit_employee/:id"
             element={<EditEmployee />}
           ></Route>
-
-          
         </Route>
       </Routes>
     </BrowserRouter>

@@ -7,6 +7,8 @@ import multer from "multer";
 const router=express.Router()
 
 router.post("/employee_login", (req, res) => {
+  console.log("Login API hit", req.body);
+
   const sql = "SELECT * from employee Where email = ?";
   con.query(sql, [req.body.email], (err, result) => {
     if (err) return res.json({ loginStatus: false, Error: "Query error" });

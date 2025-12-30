@@ -16,9 +16,13 @@ function EmployeeLogin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+      console.log("Submitting form", value);
     axios
-      .post("http://localhost:3000/employee/employee_login", value)
+      .post("http://localhost:3000/employee/employee_login", value, {
+  withCredentials: true
+})
       .then((result) => {
+        console.log(result.data);
         if (result.data.loginStatus) {
           localStorage.setItem("valid", true);
 

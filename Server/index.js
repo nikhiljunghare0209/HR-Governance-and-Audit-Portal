@@ -58,7 +58,7 @@ app.use(cookieParser());
 // Organizes your backend routes by grouping all authentication-related routes under /auth.
 // For example, the route /adminlogin in adminRouter becomes accessible as /auth/adminlogin.
 // Makes your code modular and easier to maintain by separating route logic into different files.
-
+// app.use("/images", express.static("Public/Images"));
 app.use("/auth", adminRouter);
 app.use("/employee", EmployeeRouter);
 app.use(express.static("Public"));

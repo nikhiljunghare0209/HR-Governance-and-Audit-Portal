@@ -218,38 +218,109 @@ const AddEmployee = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
 
-// below fromData object means that what name we insert in employee object present in useState,
-//  it is appended or added in FormData object as "name" — like that for every field ex.(email,password,salary,address,category_id,image)."
+// // below fromData object means that what name we insert in employee object present in useState,
+// //  it is appended or added in FormData object as "name" — like that for every field ex.(email,password,salary,address,category_id,image)."
 
-// 🔹 Use FormData when you're uploading files like images.
-// 🔹 Regular JSON (employee) can only carry text.
-// 🔹 Your backend uses multer, which needs multipart/form-data, not JSON.
-// 🔹 So: FormData is necessary here.
-// Backend receives all these fields using req.body and req.file
+// // 🔹 Use FormData when you're uploading files like images.
+// // 🔹 Regular JSON (employee) can only carry text.
+// // 🔹 Your backend uses multer, which needs multipart/form-data, not JSON.
+// // 🔹 So: FormData is necessary here.
+// // Backend receives all these fields using req.body and req.file
 
-    const formData = new FormData();
-    formData.append("name", employee.name);
-    formData.append("email", employee.email);
-    formData.append("password", employee.password);
-    formData.append("salary", employee.salary);
-    formData.append("address", employee.address);
-    formData.append("category_id", employee.category_id);
-    formData.append("image", employee.image);
+//     const formData = new FormData();
+//     formData.append("name", employee.name);
+//     formData.append("email", employee.email);
+//     formData.append("password", employee.password);
+//     formData.append("salary", employee.salary);
+//     formData.append("address", employee.address);
+//     formData.append("category_id", employee.category_id);
+//     formData.append("image", employee.image);
+//     formData.append("admin_id", JSON.parse(localStorage.getItem("admin")).id);
 
-    axios
-      .post("http://localhost:3000/auth/add_employee", formData)
-      .then((result) => {
-        if (result.data.Status) {
-          navigate("/dashboard/employee");
-        } else {
-          alert("Error: " + result.data.Error);
-        }
-      })
-      .catch((err) => console.log(err));
-  };
+//     axios
+//       .post("http://localhost:3000/auth/add_employee", formData)
+//       .then((result) => {
+//         if (result.data.Status) {
+//           navigate("/dashboard/employee");
+//         } else {
+//           alert("Error: " + result.data.Error);
+//         }
+//       })
+//       .catch((err) => console.log(err));
+//   };
+// const handleSubmit = (e) => {
+//   e.preventDefault();
+
+//   const formData = new FormData();
+//   formData.append("name", employee.name);
+//   formData.append("email", employee.email);
+//   formData.append("password", employee.password);
+//   formData.append("salary", employee.salary);
+//   formData.append("address", employee.address);
+//   formData.append("category_id", employee.category_id);
+//   formData.append("image", employee.image);
+
+//   // ✅ STEP 3.1 CHANGE START
+//   // Get logged-in admin from localStorage
+//   const admin = JSON.parse(localStorage.getItem("admin"));
+
+//   // Append admin_id so backend knows who created this employee
+//   formData.append("admin_id", admin.id);
+//   // ✅ STEP 3.1 CHANGE END
+
+//   axios
+//     .post("http://localhost:3000/auth/add_employee", formData)
+//     .then((result) => {
+//       if (result.data.Status) {
+//         navigate("/dashboard/employee");
+//       } else {
+//         alert("Error: " + result.data.Error);
+//       }
+//     })
+//     .catch((err) => console.log(err));
+// };
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // ✅ STEP 3: safely get admin from localStorage
+  const adminData = localStorage.getItem("admin");
+
+  // If admin not found, stop and redirect
+  if (!adminData) {
+    alert("Admin not logged in. Please login again.");
+    navigate("/login"); // change path if your login route is different
+    return;
+  }
+
+  const admin = JSON.parse(adminData);
+
+  // ✅ Create FormData (needed for image upload)
+  const formData = new FormData();
+  formData.append("name", employee.name);
+  formData.append("email", employee.email);
+  formData.append("password", employee.password);
+  formData.append("salary", employee.salary);
+  formData.append("address", employee.address);
+  formData.append("category_id", employee.category_id);
+  formData.append("image", employee.image);
+
+  // ✅ VERY IMPORTANT: attach admin_id
+  formData.append("admin_id", admin.id);
+
+  axios
+    .post("http://localhost:3000/auth/add_employee", formData)
+    .then((result) => {
+      if (result.data.Status) {
+        navigate("/dashboard/employee");
+      } else {
+        alert(result.data.Error);
+      }
+    })
+    .catch((err) => console.log(err));
+};
 
   return (
     <div className="d-flex justify-content-center align-items-center mt-3">
@@ -345,3 +416,4 @@ const AddEmployee = () => {
 };
 
 export default AddEmployee;
+
